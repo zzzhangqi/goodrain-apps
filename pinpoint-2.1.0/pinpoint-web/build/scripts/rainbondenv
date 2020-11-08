@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+
+if [ -z $DEPEND_SERVICE ]; then
+   echo "...........................................ERROR:No dependence on Hbase... Bye～～～～～......................................."
+else    
+   if [ $DEPEND_SERVICE_COUNT = 2 ]; then
+        DEPEND_SERVICE_1=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $1}')
+        DEPEND_SERVICE_2=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $2}')
+        
+        DEPEND_SERVICE_1_1=$(nslookup ${DEPEND_SERVICE_1%:*} | grep Name | awk '{print $2}')
+        DEPEND_SERVICE_2_2=$(nslookup ${DEPEND_SERVICE_2%:*} | grep Name | awk '{print $2}')
+        `nc -z -v $DEPEND_SERVICE_1_1 3306`;result=$?
+        if [ $result = 0 ]; then
+            echo "mysql"
+            export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_2_2
+            sh /pinpoint/scripts/start-web.sh
+        else
+            echo "..............................successful........................................."
+            export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_1_1
+            sh /pinpoint/scripts/start-web.sh
+        fi 
+   else
+        echo ".....................................ERROR:Check to see if you are relying on Mysql HBase ~~~~~................................"
+   fi
+fi                             

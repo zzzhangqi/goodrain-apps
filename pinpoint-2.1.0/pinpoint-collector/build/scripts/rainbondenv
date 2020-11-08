@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+
+if [ -z $DEPEND_SERVICE ]; then
+   echo "...........................................ERROR:No dependence on Hbase... Bye～～～～～......................................."
+else    
+    DEPEND_SERVICE_1=$(nslookup ${DEPEND_SERVICE%:*} | grep Name | awk '{print $2}')
+    export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_1
+    sh /pinpoint/scripts/start-collector.sh
+fi                             
