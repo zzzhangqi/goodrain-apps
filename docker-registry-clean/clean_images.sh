@@ -60,8 +60,13 @@ done
 
 if [ -d "$repos_op" ];then
     repos=`cd $repos_op && ls -d *`
-    docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos -u $username_op -p $password_op
-    kubectl exec $pod_name -n $namespaces registry garbage-collect /etc/docker/registry/config.yml
+    if [ -n "$hub_op" ] && [ -n "$username_op" ] && [ -n "$password_op" ] && [ -n "$pod_name" ] && [ -n "$namespaces" ]; then
+        docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos -u $username_op -p $password_op
+        kubectl exec $pod_name -n $namespaces registry garbage-collect /etc/docker/registry/config.yml
+    else
+        helpdoc
+        exit 1
+    fi
 else
     if [ -n "$hub_op" ] && [ -n "$repos_op" ] && [ -n "$username_op" ] && [ -n "$password_op" ] && [ -n "$pod_name" ] && [ -n "$namespaces" ]; then
         docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos_op -u $username_op -p $password_op
