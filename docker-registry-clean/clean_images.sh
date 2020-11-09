@@ -8,6 +8,8 @@ Option:
     -r    --repos   registry repos
     -u    --user    registry user
     -p    --passwd  registry passwd
+    -n   --pod_name registry pod name
+    -s   --namespace registry namespaces
 EOF
 }
 
@@ -23,7 +25,7 @@ if [ $# = 0 ]; then
     exit 1
 fi
 
-while getopts "hb:r:u:p:" opt
+while getopts "hb:r:u:p:n:s:" opt
 do
     case $opt in
         h)
@@ -42,6 +44,12 @@ do
         p)
             password_op=$OPTARG  
             ;;
+        n)
+            pod_name=$OPTARG
+            ;;
+        s)
+            namespaces=$OPTARG
+            ;;
         ?)
             echo "Unknown option: $opt"
             helpdoc
@@ -50,10 +58,16 @@ do
     esac
 done
 
-if [ -n "$hub_op" ] && [ -n "$repos_op" ] && [ -n "$username_op" ] && [ -n "$password_op" ];then
-    docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos_op -u $username_op -p $password_op
-    kubectl exec $(kubectl get pod -n rbd-system | grep rbd-hub | awk '{print $1}') -n rbd-system registry garbage-collect /etc/docker/registry/config.yml
+if [ -d "$repos_op" ];then
+    repos=`cd $repos_op && ls -d *`
+    docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos -u $username_op -p $password_op
+    kubectl exec $pod_name -n $namespaces registry garbage-collect /etc/docker/registry/config.yml
 else
-    helpdoc
-    exit 1
+    if [ -n "$hub_op" ] && [ -n "$repos_op" ] && [ -n "$username_op" ] && [ -n "$password_op" ] && [ -n "$pod_name" ] && [ -n "$namespaces" ]; then
+        docker run --rm registry.cn-hangzhou.aliyuncs.com/zqqq/docker-registry-clean:latest -b $hub_op -r $repos_op -u $username_op -p $password_op
+        kubectl exec $pod_name -n $namespaces registry garbage-collect /etc/docker/registry/config.yml
+    else
+        helpdoc
+        exit 1
+    fi
 fi
