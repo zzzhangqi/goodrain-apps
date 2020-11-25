@@ -3,16 +3,16 @@
 
  Source Server         : localhost
  Source Server Type    : PostgreSQL
- Source Server Version : 90506
+ Source Server Version : 90620
  Source Host           : localhost:5432
  Source Catalog        : postgres
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 90506
+ Target Server Version : 90620
  File Encoding         : 65001
 
- Date: 24/11/2020 18:02:45
+ Date: 25/11/2020 17:29:49
 */
 
 

@@ -1,0 +1,100 @@
+version: "2"
+services:
+  server:
+    image: redash/redash:8.0.0.b32245
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    command: server
+    ports:
+      - "5000:5000"
+    environment:
+      REDASH_WEB_WORKERS: 4
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: INFO
+      REDASH_REDIS_URL: redis://127.0.0.1:6379/0
+      POSTGRES_PASSWORD: xDiTJI9b4851H3NPIrmW91TLKlomqK1g
+      REDASH_COOKIE_SECRET: CBvWC682U8DvhkGThqsvLT84kHHqHtMD
+      REDASH_SECRET_KEY: 3j0uYt2k0ugHIaoBK2BXePo4WsHkmoXK
+      REDASH_DATABASE_URL: postgresql://postgres:xDiTJI9b4851H3NPIrmW91TLKlomqK1g@127.0.0.1/postgres
+  scheduler:
+    image: redash/redash:8.0.0.b32245
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    command: scheduler
+    environment:
+      QUEUES: "celery"
+      WORKERS_COUNT: 1
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: INFO
+      REDASH_REDIS_URL: redis://127.0.0.1:6379/0
+      POSTGRES_PASSWORD: xDiTJI9b4851H3NPIrmW91TLKlomqK1g
+      REDASH_COOKIE_SECRET: CBvWC682U8DvhkGThqsvLT84kHHqHtMD
+      REDASH_SECRET_KEY: 3j0uYt2k0ugHIaoBK2BXePo4WsHkmoXK
+      REDASH_DATABASE_URL: postgresql://postgres:xDiTJI9b4851H3NPIrmW91TLKlomqK1g@127.0.0.1/postgres
+  scheduled_worker:
+    image: redash/redash:8.0.0.b32245
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    command: worker
+    environment:
+      QUEUES: "scheduled_queries,schemas"
+      WORKERS_COUNT: 1
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: INFO
+      REDASH_REDIS_URL: redis://127.0.0.1:6379/0
+      POSTGRES_PASSWORD: xDiTJI9b4851H3NPIrmW91TLKlomqK1g
+      REDASH_COOKIE_SECRET: CBvWC682U8DvhkGThqsvLT84kHHqHtMD
+      REDASH_SECRET_KEY: 3j0uYt2k0ugHIaoBK2BXePo4WsHkmoXK
+      REDASH_DATABASE_URL: postgresql://postgres:xDiTJI9b4851H3NPIrmW91TLKlomqK1g@127.0.0.1/postgres
+  adhoc_worker:
+    image: redash/redash:8.0.0.b32245
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+    command: worker
+    environment:
+      QUEUES: "queries"
+      WORKERS_COUNT: 2
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: INFO
+      REDASH_REDIS_URL: redis://127.0.0.1:6379/0
+      POSTGRES_PASSWORD: xDiTJI9b4851H3NPIrmW91TLKlomqK1g
+      REDASH_COOKIE_SECRET: CBvWC682U8DvhkGThqsvLT84kHHqHtMD
+      REDASH_SECRET_KEY: 3j0uYt2k0ugHIaoBK2BXePo4WsHkmoXK
+      REDASH_DATABASE_URL: postgresql://postgres:xDiTJI9b4851H3NPIrmW91TLKlomqK1g@127.0.0.1/postgres
+  redis:
+    image: redis:5.0-alpine
+    restart: always
+    ports:
+      - "6379:6379/tcp"
+  postgres:
+    image: registry.cn-hangzhou.aliyuncs.com/zqqq/redash-pgsql:9.5.6-alpine
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: INFO
+      REDASH_REDIS_URL: redis://127.0.0.1:6379/0
+      POSTGRES_PASSWORD: xDiTJI9b4851H3NPIrmW91TLKlomqK1g
+      REDASH_COOKIE_SECRET: CBvWC682U8DvhkGThqsvLT84kHHqHtMD
+      REDASH_SECRET_KEY: 3j0uYt2k0ugHIaoBK2BXePo4WsHkmoXK
+      REDASH_DATABASE_URL: postgresql://postgres:xDiTJI9b4851H3NPIrmW91TLKlomqK1g@127.0.0.1/postgres
+    volumes:
+      - /var/lib/postgresql/data
+    restart: always
+    ports:
+      - "5432:5432/tcp"
+  nginx:
+    image: registry.cn-hangzhou.aliyuncs.com/zqqq/redash-nginx:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    links:
+      - server:redash
+    restart: always
