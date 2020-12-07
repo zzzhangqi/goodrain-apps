@@ -1,0 +1,37 @@
+$create_htaccess = 1;
+
+$webservergroup = 'apache';
+
+$use_suexec = 0;
+
+$db_driver = 'mysql';
+
+$db_host = 'mysql';
+
+$db_name = 'bug';
+
+$db_user = 'root';
+
+$db_pass = 'bug';
+
+$db_port = 3306;
+
+$db_sock = '';
+
+$db_check = 1;
+
+$db_mysql_ssl_ca_file = '';
+
+$db_mysql_ssl_ca_path = '';
+
+$db_mysql_ssl_client_cert = '';
+
+$db_mysql_ssl_client_key = '';
+
+$index_html = 0;
+
+$interdiffbin = '/usr/bin/interdiff';
+
+$diffpath = '/usr/bin';
+
+$site_wide_secret = 'fgulEAIlH4sspTF5yfqnb4laXAZxNupmxGUMIgI3rKvVIaFwQQEjvA3nBtgI2YoI';
