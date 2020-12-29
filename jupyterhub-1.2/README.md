@@ -2,7 +2,7 @@
 
 * 基于dockerfile构建即可
 
-* 镜像版本 jupyterhub/jupyterhub:1.2
+* 镜像版本 jupyterhub/jupyterhub:1.3
 
 * 访问地址: localhost:8000
 
@@ -16,3 +16,9 @@
 * 持久化目录：
     * 数据目录: /srv/jupyterhub
     * 用户数据目录: /home
+
+* 直接通过`docker run`
+
+```shell
+docker run -p 8000:8000 -d --name jupyterhub jupyterhub/jupyterhub jupyterhub -f /opt/jupyterhub_config.py
+```

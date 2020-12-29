@@ -1,10 +1,6 @@
-FROM registry.cn-hangzhou.aliyuncs.com/zqqq/jupyterhub:1.2
+FROM jupyterhub/jupyterhub:1.3
 COPY jupyterhub_config.py /opt/
-RUN apt-get update && apt -y install gcc g++ libsasl2-dev python3-dev \
-    && pip install jupyterhub jupyterlab -i https://mirrors.aliyun.com/pypi/simple/ \
-    && pip install cython \
-    && pip install bit_array pure-sasl impyla thriftpy pandas \
-    && pip install thrift_sasl==0.2.1 --no-deps \
+RUN pip install jupyterhub jupyterlab -i https://mirrors.aliyun.com/pypi/simple/ \
     && useradd -m admin \ 
     && echo "admin:admin" | chpasswd
 
