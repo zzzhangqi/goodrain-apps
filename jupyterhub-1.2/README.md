@@ -20,5 +20,5 @@
 * 直接通过`docker run`
 
 ```shell
-docker run -p 8000:8000 -d --name jupyterhub jupyterhub/jupyterhub jupyterhub -f /opt/jupyterhub_config.py
+docker run -p 8000:8000 -d --name jupyterhub registry.cn-hangzhou.aliyuncs.com/zqqq/jupyterhub:1.3
 ```
