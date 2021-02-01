@@ -25,6 +25,6 @@
     ```
 
 * 环境变量说明  
-Wechat_WebHook_URL： 微信机器人URL
-Enterprise： 企业名称
+Wechat_WebHook_URL： 微信机器人URL  
+Enterprise： 企业名称  
 AlertManagerURL： AlertmanagerUI的URL
