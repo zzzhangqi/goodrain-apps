@@ -11,4 +11,4 @@ ENV TZ=Asia/Shanghai Wechat_WebHook_URL=xxx Enterprise=xxx AlertManagerURL=xxx
 
 EXPOSE 8000
 
-CMD [ "sh", "/opt/ENTERPOINT.sh" ]
+CMD python -u main.py
