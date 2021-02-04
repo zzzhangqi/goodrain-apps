@@ -10,8 +10,7 @@ from wsgiref import simple_server
 
 # 微信机器人链接
 wechat_boot_url = os.getenv("Wechat_WebHook_URL")
-# 企业名称
-enterprise = os.getenv("Enterprise")
+
 # alertManager对外地址
 AlertManagerURL = os.getenv("AlertManagerURL")
 
@@ -25,25 +24,26 @@ def message_handler(message):
     message = eval(message)
     alerts = message["alerts"]
     alert_message = []
-    # 多台机器的时候处理
-    for i in range(len(alerts)):
-        alert = alerts[i]
-        alert = eval(str(alert))
-        labels = alert["labels"]
-        # 报警信息
-        annotations = alert["annotations"]["summary"]
-        # 开始时间
-        startsAt = alert["startsAt"]
-        alertname = eval(str(labels))["alertname"]
-        # 集群名称
-        region = eval(str(labels))["Region"]
 
-        message = "您好！您的企业" + enterprise + "，" + region + "集群的告警已触发" '\n' \
-                  + "告警项: " + alertname + '\n' \
-                  + "告警内容: " + annotations + '\n' \
-                  + "开始时间: " + startsAt + '\n' \
-                  + "您可登录AlertmanagerUrl查看: " + AlertManagerURL + '\n'
-        alert_message.append(message)
+    # 多台机器的时候处理
+    for alert in alerts:
+        status = alert["status"]
+        alertname = alert["labels"]["alertname"]
+        labels = alert.get("labels")
+        LabelsKeys = labels.keys()
+        messages = "**" + status + "**" + "  " + alertname + '\n' + "**Labels**" + '\n'
+        for LabelsKey in LabelsKeys:
+            LabelsValue = labels[LabelsKey]
+            messages = messages + "> " + LabelsKey + ":  " + LabelsValue + '\n'
+
+        Annotations = alert.get("annotations")
+        AnnotationsKeys = Annotations.keys()
+        messages = messages + '\n' + "**Annotations**" + '\n'
+        for AnnotationsKey in AnnotationsKeys:
+            AnnotationsValue = Annotations[AnnotationsKey]
+            messages = messages + "> " + AnnotationsKey + ":  " + AnnotationsValue + '\n'
+        messages = messages + '\n' + "**AlertManager**：" + "[" + AlertManagerURL + "]" + "(" + AlertManagerURL + ")"
+        alert_message.append(messages)
     return alert_message
 
 
@@ -52,8 +52,8 @@ def send_wechat(message):
     headers = {'Content-Type': 'application/json;charset=utf-8'}
     logging.debug(message)
     body = {
-        "msgtype": "text",
-        "text": {
+        "msgtype": "markdown",
+        "markdown": {
             "content": message
         }
     }
