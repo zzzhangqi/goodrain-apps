@@ -11,20 +11,15 @@ from wsgiref import simple_server
 # 微信机器人链接
 wechat_boot_url = os.getenv("Wechat_WebHook_URL")
 
-# alertManager对外地址
-AlertManagerURL = os.getenv("AlertManagerURL")
-
-
 # 日志
 logging.basicConfig(filename="webhook.log", level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s', datefmt='%Y/%m/%d %I:%M:%S %p')
-
 
 # 处理从 AlertManager 接收过来的信息
 def message_handler(message):
     message = eval(message)
     alerts = message["alerts"]
     alert_message = []
-
+    externalUrl = message["externalURL"]
     # 多台机器的时候处理
     for alert in alerts:
         status = alert["status"]
@@ -42,7 +37,7 @@ def message_handler(message):
         for AnnotationsKey in AnnotationsKeys:
             AnnotationsValue = Annotations[AnnotationsKey]
             messages = messages + "> " + AnnotationsKey + ":  " + AnnotationsValue + '\n'
-        messages = messages + '\n' + "**AlertManager**：" + "[" + AlertManagerURL + "]" + "(" + AlertManagerURL + ")"
+        messages = messages + '\n' + "**AlertManager**：" + "[" + externalUrl + "]" + "(" + externalUrl + ")"
         alert_message.append(messages)
     return alert_message
 
@@ -78,7 +73,7 @@ class Connect(object):
 
 app = falcon.API()
 connect = Connect()
-app.add_route('/connect', connect)
+app.add_route('/send', connect)
 
 if __name__ == '__main__':
     httpd = simple_server.make_server('', 8000, app)
