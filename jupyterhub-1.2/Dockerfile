@@ -1,8 +1,6 @@
 FROM jupyterhub/jupyterhub:1.3
 COPY jupyterhub_config.py /opt/
-RUN pip install jupyterhub jupyterlab -i https://mirrors.aliyun.com/pypi/simple/ \
-    && useradd -m admin \ 
-    && echo "admin:admin" | chpasswd \
+RUN pip install jupyterhub jupyterlab oauthenticator -i https://mirrors.aliyun.com/pypi/simple/ \
     && apt-get update && apt-get -y install sasl2-bin libsasl2-2 libsasl2-dev libsasl2-modules gcc g++ python3-dev \
     && pip install thrift_sasl \
     && pip install impyla \
