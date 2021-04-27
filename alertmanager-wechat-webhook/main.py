@@ -3,20 +3,36 @@
 
 import requests
 import logging
-import falcon
 import json
-import os
-from wsgiref import simple_server
+from flask import Flask
+from flask import request
+
+app = Flask(__name__)
 
 # 微信机器人链接
 wechat_boot_url = os.getenv("Wechat_WebHook_URL")
-
 # 日志
-logging.basicConfig(filename="webhook.log", level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s', datefmt='%Y/%m/%d %I:%M:%S %p')
+logging.basicConfig(filename="webhook.log", level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s',
+                    datefmt='%Y/%m/%d %I:%M:%S %p')
+
+
+# AlertManager Post请求处理函数
+@app.route("/send", methods=['POST'])
+def Post():
+    messages = request.json
+    logging.debug(messages)
+    try:
+        logging.debug(messages)
+        messages = message_handler(messages)
+        for i in messages:
+            send_wechat(i)
+    except Exception as e:
+        logging.debug(e)
+    return {"data": [{"start": "start"}]}
+
 
 # 处理从 AlertManager 接收过来的信息
 def message_handler(message):
-    message = eval(message)
     alerts = message["alerts"]
     alert_message = []
     externalUrl = message["externalURL"]
@@ -56,26 +72,8 @@ def send_wechat(message):
     requests.post(wechat_boot_url, json.dumps(body), headers=headers)
 
 
-# AlertManager Post请求处理函数
-class Connect(object):
-    def on_post(self, req, resp):
-        messages = req.stream.read()
-        logging.debug(messages)
-        try:
-            messages = str(bytes.decode(messages))
-            logging.debug(messages)
-            messages = message_handler(messages)
-            for i in range(len(messages)):
-                send_wechat(str(messages[i]))
-        except Exception as e:
-            logging.debug(e)
-
-
-app = falcon.API()
-connect = Connect()
-app.add_route('/send', connect)
-
 if __name__ == '__main__':
-    httpd = simple_server.make_server('', 8000, app)
-    logging.debug('Serving on port 8000')
-    httpd.serve_forever()
+    app.run(
+        host='0.0.0.0',
+        port=8000
+    )
