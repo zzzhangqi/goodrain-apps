@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-
+ZOOKEEPER_ADDRESS=${ZK_ADDRESS}
 if [ -z $DEPEND_SERVICE ]; then
-   echo "...........................................ERROR:No dependence on Hbase... Bye～～～～～......................................."
+    echo "...........................................ERROR:No dependence on Hbase........................................."
+    export PINPOINT_ZOOKEEPER_ADDRESS=$ZOOKEEPER_ADDRESS
+    sh /pinpoint/scripts/start-web.sh
 else    
    if [ $DEPEND_SERVICE_COUNT = 2 ]; then
         DEPEND_SERVICE_1=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $1}')

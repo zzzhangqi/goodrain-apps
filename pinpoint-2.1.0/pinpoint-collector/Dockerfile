@@ -11,7 +11,7 @@ ENV SPRING_PROFILES=release
 ENV CLUSTER_ENABLE=true
 ENV LOGGING_LEVEL_ROOT=INFO
 ENV FLINK_CLUSTER_ENABLE=false
-
+ENV TZ=Asia/Shanghai
 
 RUN mkdir -p /pinpoint/config \
     && mkdir -p /pinpoint/scripts
@@ -19,7 +19,7 @@ RUN mkdir -p /pinpoint/config \
 COPY /build/config/pinpoint-collector.properties /pinpoint/config/
 COPY /build/scripts/start-collector.sh /pinpoint/scripts/
 #temporary line for local test
-COPY pinpoint-collector-boot-2.1.0.jar /pinpoint/pinpoint-collector-boot.jar
+#COPY pinpoint-collector-boot-2.1.0.jar /pinpoint/pinpoint-collector-boot.jar
 
 COPY sources.list /etc/apt/sources.list
 COPY /build/scripts/rainbondenv /pinpoint/scripts/rainbondenv
@@ -28,8 +28,9 @@ COPY /build/scripts/rainbondenv /pinpoint/scripts/rainbondenv
 RUN apt-get update && apt-get -y install net-tools dnsutils telnet ncat \
     && chmod a+x /pinpoint/scripts/start-collector.sh \
     && chmod a+x /pinpoint/scripts/rainbondenv \
-    && chmod a+x /pinpoint/config/pinpoint-collector.properties
+    && chmod a+x /pinpoint/config/pinpoint-collector.properties \
     # && curl -SL ${INSTALL_URL} -o /pinpoint/pinpoint-collector-boot.jar
+    && curl -SL https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/2.1.0/pinpoint-collector-boot-2.1.0.jar -o /pinpoint/pinpoint-collector-boot.jar
 
 EXPOSE 9991 9992 9993 9994 9995 9996
 
