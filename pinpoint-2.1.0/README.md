@@ -26,51 +26,51 @@
 
    ```shell
    docker run -d \
-   	--name zookeeper \
-   	--net=pinpoint \
-   	zookeeper:3.4
+   --name zookeeper \
+   --net=pinpoint \
+   zookeeper:3.4
    ```
 
 3. 部署 hbase
 
    ```shell
    docker run -d \
-   	-e ZK_ADDRESS=zookeeper \
-   	--name hbase \
-   	--net=pinpoint \
-   	registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-hbase:2.1.0
+   -e ZK_ADDRESS=zookeeper \
+   --name hbase \
+   --net=pinpoint \
+   registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-hbase:2.1.0
    ```
 
 4. 部署 Mysql
 
    ```shell
    docker run -d \
-   	--name mysql \
-   	--net=pinpoint \
-   	registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-mysql:2.1.0
+   --name mysql \
+   --net=pinpoint \
+   registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-mysql:2.1.0
    ```
 
 5. 部署 Pinpoint-web
 
    ```shell
    docker run -d \
-   	-p 8080:8080 \
-   	--name=pinpoint-web \
-   	-e JDBC_URL="jdbc:mysql://mysql:3306/pinpoint?characterEncoding=UTF-8" \
-   	-e ZK_ADDRESS=zookeeper \
-   	--net=pinpoint \
-   	registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-mysql:2.1.0
+   -p 8080:8080 \
+   --name=pinpoint-web \
+   -e JDBC_URL="jdbc:mysql://mysql:3306/pinpoint?characterEncoding=UTF-8" \
+   -e ZK_ADDRESS=zookeeper \
+   --net=pinpoint \
+   registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-web:2.1.0
    ```
 
 6. 部署 Pinpoint-collector
 
    ```shell
    docker run -d \
-   	-e ZK_ADDRESS=zookeeper \
-   	--name=pinpoint-collector \
-   	-e ZK_ADDRESS=zookeeper \
-   	--net=pinpoint \
-   	registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-collector:2.1.0
+   -e ZK_ADDRESS=zookeeper \
+   --name=pinpoint-collector \
+   -e ZK_ADDRESS=zookeeper \
+   --net=pinpoint \
+   registry.cn-hangzhou.aliyuncs.com/zqqq/pinpoint-collector:2.1.0
    ```
 
 7. Volume 自定
