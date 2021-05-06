@@ -20,7 +20,7 @@ COPY hbase-create.hbase /opt/hbase/
 #COPY hbase-1.2.6-bin.tar.gz /opt/hbase/
 COPY sources.list /etc/apt/sources.list
 COPY /build/scripts/apt.sh /usr/local/bin/
-COPY /build/zookeeper/zoo.cfg /zookeeper
+COPY /build/zookeeper/zoo.cfg /
 
 RUN sh /usr/local/bin/apt.sh \
     && chmod a+x /usr/local/bin/initialize-hbase.sh \
@@ -39,7 +39,7 @@ RUN mkdir -p /zookeeper \
     && cd /zookeeper \
     && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/zookeeper/zookeeper-3.4.0.tar.gz \
     && tar xfvz zookeeper-3.4.0.tar.gz \
-    && mv zoo.cfg zookeeper-3.4.0/conf
+    && mv /zoo.cfg /zookeeper/zookeeper-3.4.0/conf
 
 EXPOSE 60000 16010 60020 2181
 VOLUME ["/home/pinpoint/hbase","/var/lib/zookeeper"]
