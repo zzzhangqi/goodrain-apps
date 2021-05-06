@@ -1,4 +1,4 @@
-<configuration>
+<!-- <configuration>
     <property>
         <name>hbase.rootdir</name>
         <value>file:///home/pinpoint/hbase</value>
@@ -13,7 +13,7 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>127.0.0.1</value>
+        <value>39.104.172.160</value>
     </property>
     <property>
 		<name>hbase.zookeeper.property.clientPort</name>
@@ -27,9 +27,9 @@
         <name>hbase.regionserver.port</name>
         <value>60020</value>
     </property>
-</configuration>
+</configuration> -->
 
-<!-- <configuration>
+<configuration>
     <property>
         <name>hbase.rootdir</name>
         <value>file:///home/pinpoint/hbase</value>
@@ -46,4 +46,4 @@
         <name>hbase.regionserver.port</name>
         <value>60020</value>
     </property>
-</configuration> -->
+</configuration>

@@ -17,7 +17,7 @@ ENV JDBC_DRIVERCLASSNAME=com.mysql.jdbc.Driver
 ENV JDBC_URL=jdbc:mysql://127.0.0.1:3306/pinpoint?characterEncoding=UTF-8
 ENV JDBC_USERNAME=admin
 ENV JDBC_PASSWORD=admin
-ENV TZ=Asia/Shanghai
+
 
 RUN mkdir -p /pinpoint/config \
     && mkdir -p /pinpoint/scripts
@@ -25,16 +25,15 @@ RUN mkdir -p /pinpoint/config \
 COPY /build/config/pinpoint-web.properties /pinpoint/config/
 COPY /build/scripts/start-web.sh /pinpoint/scripts/
 #temporary line for local test
-#COPY pinpoint-web-boot-2.1.0.jar /pinpoint/pinpoint-web-boot.jar
+COPY pinpoint-web-boot-2.1.0.jar /pinpoint/pinpoint-web-boot.jar
 COPY sources.list /etc/apt/sources.list
 COPY /build/scripts/rainbondenv /pinpoint/scripts/rainbondenv
 # RUN apk --no-cache add curl \
 RUN apt-get update && apt-get -y install net-tools dnsutils telnet ncat\
     && chmod a+x /pinpoint/scripts/start-web.sh \
     && chmod a+x /pinpoint/scripts/rainbondenv \
-    && chmod a+x /pinpoint/config/pinpoint-web.properties \
+    && chmod a+x /pinpoint/config/pinpoint-web.properties
     # && curl -SL ${INSTALL_URL} -o /pinpoint/pinpoint-web-boot.jar
-    && curl -SL https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/2.1.0/pinpoint-web-boot-2.1.0.jar -o /pinpoint/pinpoint-web-boot.jar
 EXPOSE 8080 9997
 #entry point to start-web.sh for future use.
 # ENTRYPOINT ["sh", "/pinpoint/scripts/start-web.sh"]
