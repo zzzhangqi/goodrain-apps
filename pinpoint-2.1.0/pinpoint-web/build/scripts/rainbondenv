@@ -7,16 +7,5 @@ if [ -z $DEPEND_SERVICE ]; then
     sed -i "s/hbase/$ZOOKEEPER_ADDRESS/g" /pinpoint/config/pinpoint-web.properties
     sh /pinpoint/scripts/start-web.sh
 else    
-    DEPEND_NUM=$(echo ${DEPEND_SERVICE} | sed "s/,/\n/" | wc -l)
-    for ((i=1;i<=$DEPEND_NUM;i++)); do
-        DEPEND_SERVICE_DOMAIN=$(echo ${DEPEND_SERVICE} | sed "s/,/\n/" | sed -n "$i"p)
-        DEPEND_SERVICE_IP=$(nslookup ${DEPEND_SERVICE_DOMAIN%:*} | grep Address | sed -n 2p | awk '{print $2}')
-        if [ -z $DEPEND_SERVICE_IP ]; then
-            `nc -z -v $DEPEND_SERVICE_IP 2181`;result=$?
-            if [ $result = 0 ]; then
-                sed -i "s/hbase/$DEPEND_SERVICE_IP/g" /pinpoint/config/pinpoint-web.properties
-                sh /pinpoint/scripts/start-web.sh
-            fi 
-        fi
-    done
+    sh /pinpoint/scripts/start-web.sh
 fi       
