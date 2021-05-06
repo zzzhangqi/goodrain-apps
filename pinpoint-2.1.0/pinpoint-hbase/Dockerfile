@@ -20,6 +20,7 @@ COPY hbase-create.hbase /opt/hbase/
 #COPY hbase-1.2.6-bin.tar.gz /opt/hbase/
 COPY sources.list /etc/apt/sources.list
 COPY /build/scripts/apt.sh /usr/local/bin/
+COPY /build/zookeeper/zoo.cfg /zookeeper
 
 RUN sh /usr/local/bin/apt.sh \
     && chmod a+x /usr/local/bin/initialize-hbase.sh \
@@ -33,7 +34,14 @@ RUN sh /usr/local/bin/apt.sh \
     && mv ../../hbase-env.sh ../../opt/hbase/hbase-1.2.6/conf/hbase-env.sh 
     # && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase 
 
-EXPOSE 60000 16010 60020
-VOLUME ["/home/pinpoint/hbase"]
+# zookeeper
+RUN mkdir -p /zookeeper \
+    && cd /zookeeper \
+    && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/zookeeper/zookeeper-3.4.0.tar.gz \
+    && tar xfvz zookeeper-3.4.0.tar.gz \
+    && mv zoo.cfg zookeeper-3.4.0/conf
+
+EXPOSE 60000 16010 60020 2181
+VOLUME ["/home/pinpoint/hbase","/var/lib/zookeeper"]
 
 CMD /usr/local/bin/initialize-hbase.sh && tail -f /opt/hbase/hbase-1.2.6/logs/*

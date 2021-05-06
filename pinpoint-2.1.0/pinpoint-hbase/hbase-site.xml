@@ -13,7 +13,7 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>zk</value>
+        <value>127.0.0.1</value>
     </property>
     <property>
 		<name>hbase.zookeeper.property.clientPort</name>
