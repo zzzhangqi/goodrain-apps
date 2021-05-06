@@ -37,4 +37,4 @@ RUN apt-get update && apt-get -y install net-tools dnsutils telnet ncat\
 EXPOSE 8080 9997
 #entry point to start-web.sh for future use.
 # ENTRYPOINT ["sh", "/pinpoint/scripts/start-web.sh"]
-CMD . /pinpoint/scripts/rainbondenv
+CMD ./pinpoint/scripts/rainbondenv
