@@ -5,24 +5,48 @@ if [ -z $DEPEND_SERVICE ]; then
     echo "...........................................ERROR:No dependence on Hbase........................................."
     export PINPOINT_ZOOKEEPER_ADDRESS=$ZOOKEEPER_ADDRESS
     sh /pinpoint/scripts/start-web.sh
-else    
-   if [ $DEPEND_SERVICE_COUNT = 2 ]; then
-        DEPEND_SERVICE_1=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $1}')
-        DEPEND_SERVICE_2=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $2}')
-        
-        DEPEND_SERVICE_1_1=$(nslookup ${DEPEND_SERVICE_1%:*} | grep Address | sed -n 2p | awk '{print $2}')
-        DEPEND_SERVICE_2_2=$(nslookup ${DEPEND_SERVICE_2%:*} | grep Address | sed -n 2p | awk '{print $2}')
-        `nc -z -v $DEPEND_SERVICE_1_1 3306`;result=$?
+else
+    DEPEND_NUM=$(echo ${DEPEND_SERVICE} | sed "s/,/\n/" | wc -l)
+    for ((i=1;i<=$DEPEND_NUM;i++)); do
+        DEPEND_SERVICE_DOMAIN=$(echo ${DEPEND_SERVICE} | sed "s/,/\n/" | sed -n "$i"p)
+        DEPEND_SERVICE_IP=$(nslookup ${DEPEND_SERVICE_DOMAIN%:*} | grep Address | sed -n 2p | awk '{print $2}')
+
+        `nc -z -v $DEPEND_SERVICE_1_1 2181`;result=$?
         if [ $result = 0 ]; then
-            echo "mysql"
-            export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_2_2
-            sh /pinpoint/scripts/start-web.sh
-        else
-            echo "..............................successful........................................."
-            export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_1_1
+            export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_IP
             sh /pinpoint/scripts/start-web.sh
         fi 
-   else
-        echo ".....................................ERROR:Check to see if you are relying on Mysql HBase ~~~~~................................"
-   fi
-fi                             
+    done
+fi
+
+
+
+
+
+
+# ZOOKEEPER_ADDRESS=${ZK_ADDRESS}
+# if [ -z $DEPEND_SERVICE ]; then
+#     echo "...........................................ERROR:No dependence on Hbase........................................."
+#     export PINPOINT_ZOOKEEPER_ADDRESS=$ZOOKEEPER_ADDRESS
+#     sh /pinpoint/scripts/start-web.sh
+# else    
+#    if [ $DEPEND_SERVICE_COUNT = 2 ]; then
+#         DEPEND_SERVICE_1=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $1}')
+#         DEPEND_SERVICE_2=$(echo ${DEPEND_SERVICE} | awk -F ',' '{print $2}')
+        
+#         DEPEND_SERVICE_1_1=$(nslookup ${DEPEND_SERVICE_1%:*} | grep Address | sed -n 2p | awk '{print $2}')
+#         DEPEND_SERVICE_2_2=$(nslookup ${DEPEND_SERVICE_2%:*} | grep Address | sed -n 2p | awk '{print $2}')
+#         `nc -z -v $DEPEND_SERVICE_1_1 3306`;result=$?
+#         if [ $result = 0 ]; then
+#             echo "mysql"
+#             export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_2_2
+#             sh /pinpoint/scripts/start-web.sh
+#         else
+#             echo "..............................successful........................................."
+#             export PINPOINT_ZOOKEEPER_ADDRESS=$DEPEND_SERVICE_1_1
+#             sh /pinpoint/scripts/start-web.sh
+#         fi 
+#    else
+#         echo ".....................................ERROR:Check to see if you are relying on Mysql HBase ~~~~~................................"
+#    fi
+# fi    
