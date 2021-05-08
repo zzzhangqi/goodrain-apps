@@ -29,8 +29,4 @@
         <name>hbase.zookeeper.property.dataDir</name>
         <value>/home/pinpoint/zookeeper</value>
     </property>
-    <property>
-        <name>hbase.unsafe.stream.capability.enforce</name>
-        <value>false</value>
-    </property>
 </configuration>
