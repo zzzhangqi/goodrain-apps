@@ -1,5 +1,0 @@
-deb http://mirrors.aliyun.com/debian/ jessie main contrib non-free
-deb-src http://mirrors.aliyun.com/debian/ jessie main contrib non-free
-deb http://mirrors.aliyun.com/debian/ jessie-updates main contrib non-free
-deb-src http://mirrors.aliyun.com/debian/ jessie-updates main contrib non-free
-deb [arch=amd64] http://staging-confluent-packages-5.1.2.s3.amazonaws.com/deb/5.1 stable main
