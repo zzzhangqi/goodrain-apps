@@ -24,7 +24,7 @@ RUN sh /usr/local/bin/apt.sh \
     && chmod a+x /usr/local/bin/check-table.sh \
     && mkdir -p /opt/hbase \
     && cd /opt/hbase \
-    && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/1.6.0/hbase-1.6.0-bin.tar.gz \
+    && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/2.1.0/hbase-1.6.0-bin.tar.gz \
     # && curl -fSL "${HBASE_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz || curl -fSL "${HBASE_SUB_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz \
     && tar xfvz hbase-1.6.0-bin.tar.gz \
     && mv ../../hbase-site.xml ../../opt/hbase/hbase-1.6.0/conf/hbase-site.xml
