@@ -25,8 +25,4 @@
         <name>hbase.rootdir</name>
         <value>file:///home/pinpoint/hbase</value>
     </property>
-    <property>
-        <name>hbase.cluster.distributed</name>
-        <value>true</value>
-    </property>
 </configuration>
