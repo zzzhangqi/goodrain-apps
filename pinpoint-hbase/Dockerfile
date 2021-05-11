@@ -24,13 +24,13 @@ RUN sh /usr/local/bin/apt.sh \
     && chmod a+x /usr/local/bin/check-table.sh \
     && mkdir -p /opt/hbase \
     && cd /opt/hbase \
-    && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/2.1.0/hbase-1.2.3-bin.tar.gz \
+    && wget https://goodrain-pkg.oss-cn-shanghai.aliyuncs.com/apps/pinpoint/2.1.0/hbase-1.6.0-bin.tar.gz \
     # && curl -fSL "${HBASE_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz || curl -fSL "${HBASE_SUB_REPOSITORY}/${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz" -o hbase.tar.gz \
-    && tar xfvz hbase-1.2.3-bin.tar.gz \
-    && mv ../../hbase-site.xml ../../opt/hbase/hbase-1.2.3/conf/hbase-site.xml
+    && tar xfvz hbase-1.6.0-bin.tar.gz \
+    && mv ../../hbase-site.xml ../../opt/hbase/hbase-1.6.0/conf/hbase-site.xml
     # && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase 
 
-#EXPOSE 2181 16010 16020 16000 16030
+EXPOSE 60000 60020 16010
 VOLUME ["/home/pinpoint/hbase","/home/pinpoint/zookeeper"]
 
-CMD /usr/local/bin/initialize-hbase.sh && tail -f /opt/hbase/hbase-1.2.3/logs/*
+CMD /usr/local/bin/initialize-hbase.sh && tail -f /opt/hbase/hbase-1.6.0/logs/*
