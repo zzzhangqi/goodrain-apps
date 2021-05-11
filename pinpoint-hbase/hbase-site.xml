@@ -23,7 +23,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>file:///home/pinpoint/hbase</value>
+        <value>hdfs://192.168.21.172:9000/hbase</value>
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
@@ -35,7 +35,7 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>172.20.1.231</value>
+        <value>zk</value>
     </property>
     <property>
 		<name>hbase.zookeeper.property.clientPort</name>

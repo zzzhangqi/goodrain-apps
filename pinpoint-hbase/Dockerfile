@@ -31,6 +31,5 @@ RUN sh /usr/local/bin/apt.sh \
     # && curl -SL "https://raw.githubusercontent.com/naver/pinpoint/v${PINPOINT_VERSION}/hbase/scripts/hbase-create.hbase" -o ${BASE_DIR}/hbase-create.hbase 
 
 EXPOSE 60000 60020 16010
-VOLUME ["/home/pinpoint/hbase","/home/pinpoint/zookeeper"]
 
 CMD /usr/local/bin/initialize-hbase.sh && tail -f /opt/hbase/hbase-1.6.0/logs/*
