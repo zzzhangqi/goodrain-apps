@@ -21,13 +21,12 @@ if [ ! -z $DEPEND_SERVICE ]; then
 
     
 
-	#_main "$@"
     case ${STOLON_ROLE} in
     keeper)
         gosu stolon stolon-keeper \
         --pg-listen-address ${POD_IP} \
         --pg-repl-username replication \
-        --uid ${HOSTNAME} \
+        --uid ${SERVICE_NAME} \
         --pg-su-username postgres \
         --pg-su-password ${PG_SU_PASSWORD} \
         --pg-repl-password password1 \
