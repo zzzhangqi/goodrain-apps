@@ -26,7 +26,7 @@ if [ ! -z $DEPEND_SERVICE ]; then
         gosu stolon stolon-keeper \
         --pg-listen-address ${POD_IP} \
         --pg-repl-username replication \
-        --uid ${SERVICE_NAME} \
+        --uid ${SERVICE_NAME}${HOSTNAME#*-} \
         --pg-su-username postgres \
         --pg-su-password ${PG_SU_PASSWORD} \
         --pg-repl-password password1 \
@@ -34,13 +34,13 @@ if [ ! -z $DEPEND_SERVICE ]; then
         --cluster-name stolon-cluster \
         --store-backend=consul \
         --store-endpoints http://127.0.0.1:8500 \
-        --log-level debug
+        --log-level info
         ;;
     sentinel)
         gosu stolon stolon-sentinel --cluster-name stolon-cluster \
         --store-backend=consul \
         --store-endpoints http://127.0.0.1:8500 \
-        --log-level debug
+        --log-level info
         ;;
     proxy)
         gosu stolon stolon-proxy \
