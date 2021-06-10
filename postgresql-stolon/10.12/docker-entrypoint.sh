@@ -322,7 +322,7 @@ if ! _is_sourced; then
         _main gosu stolon stolon-keeper \
         --pg-listen-address ${POD_IP} \
         --pg-repl-username replication \
-        --uid ${POD_IP} \
+        --uid ${HOSTNAME} \
         --pg-su-username postgres \
         --pg-su-password ${PG_SU_PASSWORD} \
         --pg-repl-password password1 \
