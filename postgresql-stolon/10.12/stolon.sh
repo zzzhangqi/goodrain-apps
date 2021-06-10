@@ -11,7 +11,7 @@ if [ ! -z $DEPEND_SERVICE ]; then
     if [ ! -n "$result" ];then
         curl --request PUT --data @contents http://127.0.0.1:8500/v1/kv/initkey
         # Initializing the cluster
-        stolonctl \
+        echo yes | stolonctl \
         --cluster-name=stolon-cluster \
         --store-backend=consul \
         --store-endpoints http://127.0.0.1:8500 init
