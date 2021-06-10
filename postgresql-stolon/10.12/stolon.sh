@@ -14,7 +14,7 @@ if [ ! -z $DEPEND_SERVICE ]; then
         stolonctl \
         --cluster-name=stolon-cluster \
         --store-backend=consul \
-        --store-endpoints http://$Consul0:8500,http://$Consul1:8500,http://$Consul2:8500 init
+        --store-endpoints http://127.0.0.1:8500 init
     else
         echo "The cluster has been initialized"
     fi
