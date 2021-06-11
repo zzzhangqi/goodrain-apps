@@ -19,13 +19,19 @@ CLUSTER02=${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
 GRA=/var/lib/mysql/grastate.dat
 if [ "${HOSTNAME}" = "${SERVICE_NAME}-0" ];then
 	if [ -f "/var/lib/mysql/wsrep_local_state_uuid.log" ];then
-		/usr/bin/mysql -h$CLUSTER01 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+		ping -c 1 $CLUSTER01
 		if [ "$?" = 0 ];then
-			CLUSTER_STATUS_01=0
+			/usr/bin/mysql -h$CLUSTER01 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+			if [ "$?" = 0 ];then
+				CLUSTER_STATUS_01=0
+			fi
 		fi
-		/usr/bin/mysql -h$CLUSTER02 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+		ping -c 1 $CLUSTER02
 		if [ "$?" = 0 ];then
-			CLUSTER_STATUS_02=0
+			/usr/bin/mysql -h$CLUSTER02 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+			if [ "$?" = 0 ];then
+				CLUSTER_STATUS_02=0
+			fi
 		fi
 		if [ "$CLUSTER_STATUS_01" = 0 ] && [ "$CLUSTER_STATUS_02" = 0 ];then
 			export CLUSTER_JOIN=${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local,${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
