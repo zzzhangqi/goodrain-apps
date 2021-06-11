@@ -4,14 +4,47 @@ shopt -s nullglob
 set -o xtrace
 
 # rainbond start,zq modify in 2021-03-22
+# if [ "${HOSTNAME}" = "${SERVICE_NAME}-0" ];then
+# 	echo "this is first pod"
+# 	if [ -f "/var/lib/mysql/wsrep_local_state_uuid.log" ];then
+# 		export CLUSTER_JOIN=${SERVICE_NAME}-0.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}
+# 	fi
+# else
+# 	export CLUSTER_JOIN=${SERVICE_NAME}-0.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}
+# fi
+
+# rainbond,zq modify in 2021-06-11
+CLUSTER01=${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
+CLUSTER02=${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
+GRA=/var/lib/mysql/grastate.dat
 if [ "${HOSTNAME}" = "${SERVICE_NAME}-0" ];then
-	echo "this is first pod"
 	if [ -f "/var/lib/mysql/wsrep_local_state_uuid.log" ];then
-		export CLUSTER_JOIN=${SERVICE_NAME}-0.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}
+		/usr/bin/mysql -h$CLUSTER01 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+		if [ "$?" = 0 ];then
+			CLUSTER_STATUS_01=0
+		fi
+		/usr/bin/mysql -h$CLUSTER02 -uroot -p$MYSQL_ROOT_PASSWORD -e ";"
+		if [ "$?" = 0 ];then
+			CLUSTER_STATUS_02=0
+		fi
+		if [ "$CLUSTER_STATUS_01" = 0 ] && [ "$CLUSTER_STATUS_02" = 0 ];then
+			export CLUSTER_JOIN=${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local,${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
+		elif [ "$CLUSTER_STATUS_01" = 0 ];then
+			export CLUSTER_JOIN=${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
+		elif [ "$CLUSTER_STATUS_02" = 0 ];then
+			export CLUSTER_JOIN=${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
+		else
+			if grep 'safe_to_bootstrap: 0' "${GRA}"; then 
+        		sed "s^safe_to_bootstrap: 0^safe_to_bootstrap: 1^" ${GRA} 1<> ${GRA}
+    		fi
+		fi
+	else
+		echo "Start the first pod for the first time"
 	fi
 else
-	export CLUSTER_JOIN=${SERVICE_NAME}-0.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-1.${SERVICE_NAME}.${TENANT_ID},${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}
+	export CLUSTER_JOIN=${SERVICE_NAME}-0.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
 fi
+
 # used for rainbond local volume,zq modify in 2021-03-22
 echo mysql | sudo -S chmod 777 /var/lib/mysql && echo mysql | sudo -S chmod 777 /var/log/mysql
 
