@@ -8,6 +8,7 @@
 ```shell
 registry.cn-hangzhou.aliyuncs.com/zqqq/percona-xtradb-cluster-rbd:5.7
 ```
+> 在Rainbond上运行自注册集群方式暂不可用，使用ETCD自动发现解决，有时间再研究自注册集群
 
 ### 构建haproxy
 
