@@ -1,5 +1,5 @@
 FROM rabbitmq:3.7.8-management
-ADD config/ /etc/rabbitmq/
+ADD conf/ /etc/rabbitmq/
 ENV RABBITMQ_ERLANG_COOKIE="my-cookie-123" \
     RABBITMQ_DEFAULT_USER=admin \
     RABBITMQ_DEFAULT_PASS=admin
