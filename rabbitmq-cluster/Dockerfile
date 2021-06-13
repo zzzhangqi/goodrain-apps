@@ -1,7 +1,6 @@
-FROM rabbitmq:3.7
-COPY conf/enabled_plugins /etc/rabbitmq
-COPY conf/rabbitmq.conf /etc/rabbitmq
-ENV TCP_PORTS=15672,5672 RABBITMQ_ERLANG_COOKIE="cookie" \
+FROM rabbitmq:3.7.8-management
+ADD config/ /etc/rabbitmq/
+ENV RABBITMQ_ERLANG_COOKIE="my-cookie-123" \
     RABBITMQ_DEFAULT_USER=admin \
     RABBITMQ_DEFAULT_PASS=admin
 VOLUME [ "/var/lib/rabbitmq" ]
