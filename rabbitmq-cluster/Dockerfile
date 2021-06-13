@@ -1,4 +1,4 @@
-FROM rabbitmq:3.7.8-management
+FROM rabbitmq:3.8-management
 ADD conf/ /etc/rabbitmq/
 ENV RABBITMQ_ERLANG_COOKIE="my-cookie-123" \
     RABBITMQ_DEFAULT_USER=admin \
