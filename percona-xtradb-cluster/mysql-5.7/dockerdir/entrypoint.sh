@@ -33,6 +33,7 @@ if [ "${HOSTNAME}" = "${SERVICE_NAME}-0" ];then
 			export CLUSTER_JOIN=${SERVICE_NAME}-2.${SERVICE_NAME}.${TENANT_ID}.svc.cluster.local
 		else
 			if grep 'safe_to_bootstrap: 0' "${GRA}"; then 
+				mysqld --wsrep-recover --tc-heuristic-recover=COMMIT
         		sed "s^safe_to_bootstrap: 0^safe_to_bootstrap: 1^" ${GRA} 1<> ${GRA}
     		fi
 		fi
