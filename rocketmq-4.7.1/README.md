@@ -1,5 +1,5 @@
-## rocketmq
-[请参考官方文档](https://rocketmq-1.gitbook.io/rocketmq-connector/quick-start/qian-qi-zhun-bei/ji-qun-huan-jing)
+## rocketmq cluster
+[参考文档](https://rocketmq-1.gitbook.io/rocketmq-connector/quick-start/qian-qi-zhun-bei/ji-qun-huan-jing)
 ### 1.构建基础broker镜像
 ```shell
 docker build -t registry.cn-hangzhou.aliyuncs.com/zqqq/rocketmq-base:4.7.1 broker-base/
