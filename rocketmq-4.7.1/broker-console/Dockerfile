@@ -1,4 +1,5 @@
 FROM maven:3-jdk-8
+ENV USER_LOGIN_ENABLE=true CONSOLE_ADMIN_PASSWORD=admin
 WORKDIR /opt
 ADD . /opt/
 RUN cd /opt && \
