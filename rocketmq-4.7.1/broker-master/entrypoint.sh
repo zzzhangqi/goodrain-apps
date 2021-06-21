@@ -43,7 +43,7 @@ brokerId=${BROKER_ID}
 #broker角色 ASYNC_MASTER为异步主节点，SYNC_MASTER为同步主节点，SLAVE为从节点
 brokerRole=${BROKER_ROLE}
 #刷新数据到磁盘的方式，ASYNC_FLUSH刷新
-flushDiskType=ASYNC_FLUSH
+flushDiskType=${FLUSH_ROLE}
 ##Broker 对外服务的监听端口
 listenPort=10911
 #nameserver地址，分号分割
