@@ -37,3 +37,7 @@ docker build -t registry.cn-hangzhou.aliyuncs.com/zqqq/rocketmq-broker-console:4
 ```
 * 默认写死了 rocketmq.config.namesrvAddr 部署在rainbond无需修改  
 如需修改，请修改 broker-console/src/main/resources/application.properties文件里的rocketmq.config.namesrvAddr字段
+* 设置环境变量：`USER_LOGIN_ENABLE=true` 开启用户登录
+* 默认用户：admin
+* 默认密码：admin，可通过环境变量 `CONSOLE_ADMIN_PASSWORD=xxx` 修改密码。
+* 可通过环境变量 `CONSOLE_USERNAME` `CONSOLE_PASSWORD` 设置普通用户密码。
