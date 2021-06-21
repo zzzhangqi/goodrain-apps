@@ -33,4 +33,4 @@ EXPOSE 10909 10911 10912
 COPY entrypoint.sh ${ROCKETMQ_HOME}/bin/
 
 ENTRYPOINT ${ROCKETMQ_HOME}/bin/entrypoint.sh
-VOLUME [ "/opt/rocketmq/logs" ,"/opt/rocketmq/store" ]
+VOLUME [ "/opt/logs/rocketmqlogs" ,"/opt/rocketmq/store" ]

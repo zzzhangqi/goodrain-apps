@@ -29,4 +29,4 @@ COPY to_bytes.gawk ${ROCKETMQ_HOME}/bin/
 
 WORKDIR ${ROCKETMQ_HOME}/bin/
 
-VOLUME /opt/rocketmq/logs /opt/rocketmq/store
+VOLUME /opt/logs/rocketmqlogs /opt/rocketmq/store

@@ -91,3 +91,5 @@ EOF
 cd ${ROCKETMQ_HOME}/bin \
  && export JAVA_OPT=" -Duser.home=/opt" \
  && sh mqbroker -c ../conf/broker.conf
+
+tail -f /opt/logs/rocketmqlogs/*.log
