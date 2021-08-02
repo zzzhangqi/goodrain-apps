@@ -13,6 +13,7 @@ set -o pipefail
 . /opt/bitnami/scripts/libmongodb-sharded.sh
 
 # Load MongoDB env. variables
+. /opt/bitnami/scripts/rainbond.sh
 . /opt/bitnami/scripts/mongodb-env.sh
 
 print_welcome_page

@@ -12,6 +12,7 @@ set -o pipefail
 . /opt/bitnami/scripts/libos.sh
 
 # Load MongoDB env. variables
+. /opt/bitnami/scripts/rainbond.sh
 . /opt/bitnami/scripts/mongodb-env.sh
 
 if [[ "$MONGODB_SHARDING_MODE" = "mongos" ]]; then
