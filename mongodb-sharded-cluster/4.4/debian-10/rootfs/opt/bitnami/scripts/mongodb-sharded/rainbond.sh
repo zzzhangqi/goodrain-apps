@@ -12,3 +12,5 @@ fi
 if [[ "$MONGODB_SHARDING_MODE" = "shardsvr" ]]; then
     export MONGODB_MONGOS_HOST=$(nslookup ${DEPEND_SERVICE%:*} | grep Name | awk '{print $2}' | cut -d . -f -1 | sort --version-sort -r | uniq)
 fi
+
+export MONGODB_ADVERTISED_HOSTNAME=$HOSTNAME
