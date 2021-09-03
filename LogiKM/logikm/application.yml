@@ -41,11 +41,11 @@ custom:
 task:
   op:
     sync-topic-enabled: false # 未落盘的Topic定期同步到DB中
-account:
-  # ldap settings
-  ldap:
-    enabled: false
-    authUserRegistration: false
+# account:
+#   # ldap settings
+#   ldap:
+#     enabled: false
+#     authUserRegistration: false
 kcm:
   enabled: false
   storage:
