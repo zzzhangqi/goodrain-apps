@@ -12,7 +12,7 @@ spring:
     kafka-manager:
       jdbc-url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false
       username: ${MYSQL_USER}
-      password: ${MYSQL_PASS}
+      password: ${MYSQL_PASSWORD}
       driver-class-name: com.mysql.jdbc.Driver
   main:
     allow-bean-definition-overriding: true
